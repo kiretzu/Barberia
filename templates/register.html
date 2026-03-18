@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block title %}Registro{% endblock %}
+{% block content %}
+<div class="col-md-4 mx-auto mt-5">
+  <div class="card shadow">
+    <div class="card-body">
+      <h4 class="card-title text-center mb-4">📝 Crear cuenta</h4>
+      <form method="POST">
+        <div class="mb-3">
+          <label>Usuario</label>
+          <input type="text" name="username" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label>Contraseña</label>
+          <input type="password" name="password" class="form-control" required>
+        </div>
+        <button class="btn btn-success w-100">Registrar</button>
+      </form>
+      <hr>
+      <div class="text-center">
+        <a href="{{ url_for('login') }}">Iniciar sesión</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

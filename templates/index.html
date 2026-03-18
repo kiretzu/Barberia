@@ -1,0 +1,105 @@
+{% extends 'layout.html' %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+
+<h3 class="mb-3 text-center">📋 Lista de Personas</h3>
+
+<table class="table table-bordered table-striped shadow-sm">
+  <thead class="table-primary">
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Edad</th>
+      {% if 'actualizar' in privilegios or 'eliminar' in privilegios %}
+      <th>Acciones</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in personas %}
+    <tr>
+      <td>{{ p[0] }}</td>
+      <td>{{ p[1] }}</td>
+      <td>{{ p[2] }}</td>
+
+      {% if 'actualizar' in privilegios or 'eliminar' in privilegios %}
+      <td>
+        {% if 'actualizar' in privilegios %}
+        <a href="{{ url_for('edit', id=p[0]) }}"
+           class="btn btn-warning btn-sm">Editar</a>
+        {% endif %}
+
+        {% if 'eliminar' in privilegios %}
+        <a href="{{ url_for('delete', id=p[0]) }}"
+           class="btn btn-danger btn-sm">Eliminar</a>
+        {% endif %}
+
+        {% if session['username'] == 'admin' %}
+        
+{% endif %}
+      </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% if 'crear' in privilegios %}
+<div class="card mt-4 shadow">
+  <div class="card-body">
+    <h5>➕ Agregar nueva persona</h5>
+
+    <form method="POST" action="{{ url_for('add') }}">
+      <div class="row">
+        <div class="col">
+          <input type="text" name="nombre"
+                 placeholder="Nombre"
+                 class="form-control" required>
+        </div>
+        <div class="col">
+          <input type="number" name="edad"
+                 placeholder="Edad"
+                 class="form-control" required>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary">Agregar</button>
+        </div>
+        
+      </div>
+    </form>
+<div class="text-end mb-3">
+    <a href="{{ url_for('backup_bd') }}" class="btn btn-dark">
+        Backup de la Base de Datos
+    </a>
+</div>
+  </div>
+</div>
+{% endif %}
+
+
+{% if logs %}
+<hr>
+<h3 class="mt-4 text-center">🛡️ Registro de Auditoría</h3>
+
+<table class="table table-bordered table-striped shadow-sm">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Acción</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for log in logs %}
+    <tr>
+      <td>{{ log[0] }}</td>
+      <td>{{ log[1] }}</td>
+      <td>{{ log[2] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% endblock %}
